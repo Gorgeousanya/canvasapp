@@ -23,13 +23,14 @@ import { reducer } from "./store";
 const initializeAssistant = (getState: any) => {
   if (process.env.NODE_ENV === "development") {
     console.log(getState)
+    //alert(getState)
     return createSmartappDebugger({
       token: process.env.REACT_APP_TOKEN ?? "",
       initPhrase: `Запусти ${process.env.REACT_APP_SMARTAPP}`,
       getState,
     });
   }
-
+  
   return createAssistant({ getState });
 };
 
@@ -50,18 +51,21 @@ export const App: FC = memo(() => {
     },
   ]
   let link = ""
-  const link_and = "android-app://ru.sberbankmobile/sberbankid/agreement?servicesCode=25?internal_source=audiohelper160503"
-  const link_ios = "sbolonline://sberbankid/omniconsent?servicesCode=25?internal_source=audiohelper160503"
+  const link_and = "android-app://ru.sberbankmobile/sberbankid/agreement?servicesCode=25"
+  const link_ios = "sbolonline://sberbankid/omniconsent?servicesCode=25"
   const assistantStateRef = useRef<AssistantAppState>();
   const assistantRef = useRef<ReturnType<typeof createAssistant>>();
 
   useEffect(() => {
     assistantRef.current = initializeAssistant(() => assistantStateRef.current);
-    // assistantRef.current.on("data", ({ action }: any) => {
-    //   if (action) {
-    //     dispatch(action);
-    //   }
-    // });
+    //alert(JSON.stringify(assistantRef.current, null, 4));
+    console.log(assistantRef.current)
+    assistantRef.current.on("data", ({ action }: any) => {
+      //alert(action);
+      // if (action) {
+      //   dispatch(action);
+      // }
+    });
     link = isIOS ? "sbolonline://sberbankid/omniconsent?servicesCode=25?internal_source=audiohelper160503" :
     "android-app://ru.sberbankmobile/sberbankid/agreement?servicesCode=25?internal_source=audiohelper160503"
     console.log(isIOS)
