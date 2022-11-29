@@ -57,7 +57,6 @@ export const App: FC = memo(() => {
 
   useEffect(() => {
     assistantRef.current = initializeAssistant(() => assistantStateRef.current);
-    console.log(assistantRef.current)
     // assistantRef.current.on("data", ({ action }: any) => {
     //   if (action) {
     //     dispatch(action);
@@ -91,9 +90,6 @@ export const App: FC = memo(() => {
         <Button size="m" view="primary" onClick={()=>{console.log(link)}}>
           <a href={link} android-apk={link_and} > Узнать больше и управлять</a>
         </Button>
-        {/* <p >
-          После перехода Вы получите дополнительные сведения и расширенную информацию об услуге
-        </p> */}
       </div>
     </main>
   );
