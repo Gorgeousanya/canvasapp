@@ -66,8 +66,8 @@ export const App: FC = memo(() => {
       //   dispatch(action);
       // }
     });
-    link = isIOS ? "sbolonline://sberbankid/omniconsent?servicesCode=25?internal_source=audiohelper160503" :
-    "android-app://ru.sberbankmobile/sberbankid/agreement?servicesCode=25?internal_source=audiohelper160503"
+    link = isIOS ? "sbolonline://sberbankid/omniconsent?servicesCode=25" :
+    "android-app://ru.sberbankmobile/sberbankid/agreement?servicesCode=25?"
     console.log(isIOS)
   }, []);
 
