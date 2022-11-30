@@ -16,7 +16,7 @@ import { headline2} from '@salutejs/plasma-tokens';
 import task from './assets/task.png'
 import ListItem from "./components/list-item/ListItem";
 import {
-  isIOS
+  isAndroid
 } from "react-device-detect";
 import { reducer } from "./store";
 
@@ -50,7 +50,8 @@ export const App: FC = memo(() => {
       subtitle: "Возможность получать скидки от партнёров и индивидуальные условия от банка"
     },
   ]
-  let link = ""
+  const link = isAndroid ? "android-app://ru.sberbankmobile/sberbankid/agreement?servicesCode=25?" :
+    "sbolonline://sberbankid/omniconsent?servicesCode=25"
   const link_and = "android-app://ru.sberbankmobile/sberbankid/agreement?servicesCode=25"
   const link_ios = "sbolonline://sberbankid/omniconsent?servicesCode=25"
   const assistantStateRef = useRef<AssistantAppState>();
@@ -66,9 +67,6 @@ export const App: FC = memo(() => {
       //   dispatch(action);
       // }
     });
-    link = isIOS ? "sbolonline://sberbankid/omniconsent?servicesCode=25" :
-    "android-app://ru.sberbankmobile/sberbankid/agreement?servicesCode=25?"
-    console.log(isIOS)
   }, []);
 
   return (
@@ -91,8 +89,8 @@ export const App: FC = memo(() => {
           )
         }
         
-        <Button size="m" view="primary" onClick={()=>{console.log(link)}}>
-          <a href={link} android-apk={link_and} > Узнать больше и управлять</a>
+        <Button size="m" view="primary" onClick={()=>{console.log(isAndroid, link)}}>
+          <a href={link} android-apk={link_and} target="_self"> Узнать больше и управлять</a>
         </Button>
       </div>
     </main>
