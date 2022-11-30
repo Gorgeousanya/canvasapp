@@ -89,7 +89,7 @@ export const App: FC = memo(() => {
           console.log('AssistantWrapper.handleAssistantEventCharacter: character.id:', event.character.id);
           //emit('event-character', event.character);
           setCharacter(event.character?.id)
-          console.log(character)
+          alert(event.character?.id)
         }
 
    const handleAssistantDataEvent = (event:any) => {
