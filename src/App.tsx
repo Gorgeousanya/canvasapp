@@ -4,6 +4,7 @@ import React, {
   useReducer,
   useRef,
   useEffect,
+  useState,
 } from "react";
 import {
   createSmartappDebugger,
@@ -18,7 +19,14 @@ import ListItem from "./components/list-item/ListItem";
 import {
   isAndroid
 } from "react-device-detect";
+import { GlobalStyle } from './components/GlobalStyles';
 import { reducer } from "./store";
+import {
+  CHAR_SBER,
+  CharacterId,
+  AssistantCharacter
+} from './types'
+
 
 const initializeAssistant = (getState: any) => {
   if (process.env.NODE_ENV === "development") {
@@ -36,6 +44,7 @@ const initializeAssistant = (getState: any) => {
 
 export const App: FC = memo(() => {
   //const [appState, dispatch] = useReducer(reducer, { notes: [] });
+  const [character, setCharacter] = useState<CharacterId>(CHAR_SBER);
   const list = [
     {
       title: "Сервисы Сбера в одном приложении",
@@ -52,8 +61,6 @@ export const App: FC = memo(() => {
   ]
   const link = isAndroid ? "android-app://ru.sberbankmobile/sberbankid/agreement?servicesCode=25?" :
     "sbolonline://sberbankid/omniconsent?servicesCode=25"
-  const link_and = "android-app://ru.sberbankmobile/sberbankid/agreement?servicesCode=25"
-  const link_ios = "sbolonline://sberbankid/omniconsent?servicesCode=25"
   const assistantStateRef = useRef<AssistantAppState>();
   const assistantRef = useRef<ReturnType<typeof createAssistant>>();
 
@@ -61,15 +68,50 @@ export const App: FC = memo(() => {
     assistantRef.current = initializeAssistant(() => assistantStateRef.current);
     //alert(JSON.stringify(assistantRef.current, null, 4));
     console.log(assistantRef.current)
-    assistantRef.current.on("data", ({ action }: any) => {
+    assistantRef.current.on("data", ( action : any) => {
       //alert(action);
       // if (action) {
       //   dispatch(action);
       // }
+      handleAssistantDataEvent(action)
     });
+    //  assistantRef.current.on("start", (event) => {
+    //     console.log(`AssistantWrapper: _assistant.on(start)`, event);
+    //   });
+  
+    //   assistantRef.current.on("ANSWER_TO_USER", (event) => {
+    //     console.log(`AssistantWrapper: _assistant.on(raw)`, event);
+    //   });
+    
   }, []);
 
+   const handleAssistantDataEventCharacter = (event: any) => {
+          console.log('AssistantWrapper.handleAssistantEventCharacter: character.id:', event.character.id);
+          //emit('event-character', event.character);
+          setCharacter(event.character?.id)
+          console.log(character)
+        }
+
+   const handleAssistantDataEvent = (event:any) => {
+      console.log('AssistantWrapper.handleAssistantDataEvent: event:', event);
+  
+      switch (event?.type) {
+  
+        case "character":
+          handleAssistantDataEventCharacter(event);
+          break;
+  
+        // case "smart_app_data":
+        //   handleAssistantDataEventSmartAppData(event);
+        //   break
+  
+        default:
+          break
+      }
+    }
+
   return (
+    <GlobalStyle character={character}>
     <main className="container">
       <Image
         src={task}
@@ -90,9 +132,10 @@ export const App: FC = memo(() => {
         }
         
         <Button size="m" view="primary" onClick={()=>{console.log(isAndroid, link)}}>
-          <a href={link} android-apk={link_and} target="_self"> Узнать больше и управлять</a>
+          <a href={link} target="_self"> Узнать больше и управлять</a>
         </Button>
       </div>
     </main>
+    </GlobalStyle>
   );
 });

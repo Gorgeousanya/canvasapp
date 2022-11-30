@@ -10,7 +10,7 @@ ReactDOM.render(
     <DeviceThemeProvider>
         <SSRProvider>
             
-            <GlobalStyle />
+            {/* <GlobalStyle /> */}
             <App />
         </SSRProvider>
     </DeviceThemeProvider>,
