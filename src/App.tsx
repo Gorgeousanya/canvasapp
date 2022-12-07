@@ -26,6 +26,8 @@ import {
   CharacterId,
   AssistantCharacter
 } from './types'
+import { ToastContainer, toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
 
 
 const initializeAssistant = (getState: any) => {
@@ -130,20 +132,23 @@ export const App: FC = memo(() => {
 
    const handleAssistantDataEvent = (event:any) => {
       console.log('AssistantWrapper.handleAssistantDataEvent: event:', event);
-  
+      const notify = (event: any) => toast(event);
       switch (event?.type) {
   
         case "character":
+          notify(event.type);
           console.log(event.type)
           handleAssistantDataEventCharacter(event);
           break;
         case "sdk_answer":
+          notify(event.type);
           console.log("sdk_answer", event);
           handleAssistantDataEventSmartAppData(event);
           break;
 
         case "smart_app_data":
           console.log(event.type);
+          notify(event.type);
           handleAssistantDataEventSmartAppData(event);
           break
   
@@ -152,9 +157,10 @@ export const App: FC = memo(() => {
       }
       
     }
-
+    
   return (
     <GlobalStyle character={character}>
+      <ToastContainer />
     <main className="container">
       <Image
         src={task}
