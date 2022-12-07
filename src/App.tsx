@@ -12,8 +12,8 @@ import {
   AssistantAppState,
 } from "@sberdevices/assistant-client";
 import "./App.css";
-import { Button, Image } from '@salutejs/plasma-ui';
-import { headline2} from '@salutejs/plasma-tokens';
+import { Button, Image, ToastProvider, useToast } from '@salutejs/plasma-ui';
+import { headline2, headline4 } from '@salutejs/plasma-tokens';
 import task from './assets/task.png'
 import ListItem from "./components/list-item/ListItem";
 import {
@@ -45,6 +45,8 @@ const initializeAssistant = (getState: any) => {
 export const App: FC = memo(() => {
   //const [appState, dispatch] = useReducer(reducer, { notes: [] });
   const [character, setCharacter] = useState<CharacterId>(CHAR_SBER);
+  const [log, setLog] = useState<string>("");
+  const { showToast, hideToast } = useToast()
   const list = [
     {
       title: "Сервисы Сбера в одном приложении",
@@ -73,11 +75,19 @@ export const App: FC = memo(() => {
       // if (action) {
       //   dispatch(action);
       // }
+      setLog(JSON.stringify(assistantRef.current))
+      showToast(log)
       handleAssistantDataEvent(action)
     });
-    //  assistantRef.current.on("start", (event) => {
-    //     console.log(`AssistantWrapper: _assistant.on(start)`, event);
-    //   });
+
+    assistantRef.current.on("command", (event) => {
+      setLog(JSON.stringify(event))
+          console.log(`AssistantWrapper: _assistant.on(start)`, event);
+        });
+
+     assistantRef.current.on("start", () => {
+        console.log(`AssistantWrapper: _assistant.on(start)`);
+      });
   
     //   assistantRef.current.on("ANSWER_TO_USER", (event) => {
     //     console.log(`AssistantWrapper: _assistant.on(raw)`, event);
@@ -89,8 +99,35 @@ export const App: FC = memo(() => {
           console.log('AssistantWrapper.handleAssistantEventCharacter: character.id:', event.character.id);
           //emit('event-character', event.character);
           setCharacter(event.character?.id)
-          alert(event.character?.id)
         }
+
+    const handleAssistantDataEventSmartAppData = (event: any) => {
+      console.log('AssistantWrapper.handleAssistantEventSmartAppData: event:', event);
+
+      if (event.sub !== undefined) {
+        // this.emit('event-sub', event.sub);
+        // /*await*/ this._App.handleAssistantSub(event.sub);
+      }
+
+      const {action} = event;
+      dispatchAssistantAction(action);
+    }
+
+    const dispatchAssistantAction = (action: any) => {
+      console.log('AssistantWrapper.dispatchAssistantAction:', action)
+
+      if (!action) return;
+
+      switch (action.type) {
+        case 'add':
+          window.location.replace(link);
+          break;
+
+        default:
+        // console.warn('dispatchAssistantAction: Unknown action.type:', action.type)
+
+      }
+    }
 
    const handleAssistantDataEvent = (event:any) => {
       console.log('AssistantWrapper.handleAssistantDataEvent: event:', event);
@@ -100,14 +137,18 @@ export const App: FC = memo(() => {
         case "character":
           handleAssistantDataEventCharacter(event);
           break;
-  
-        // case "smart_app_data":
-        //   handleAssistantDataEventSmartAppData(event);
-        //   break
+        case "sdk_answer":
+          console.log("sdk_answer", event);
+          break;
+
+        case "smart_app_data":
+          handleAssistantDataEventSmartAppData(event);
+          break
   
         default:
           break
       }
+      
     }
 
   return (
@@ -130,10 +171,10 @@ export const App: FC = memo(() => {
             <ListItem key={index} index={index + 1} title={item.title} subtitle={item.subtitle} />
           )
         }
-        
         <Button size="m" view="primary" onClick={()=>{console.log(isAndroid, link)}}>
           <a href={link} target="_self"> Узнать больше и управлять</a>
         </Button>
+        
       </div>
     </main>
     </GlobalStyle>

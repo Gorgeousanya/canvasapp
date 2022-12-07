@@ -17,7 +17,7 @@ export type CharacterId = typeof CHAR_SBER
       mid: string //
                   // "-1"
                   // "1635880800399"
-      requestId: any   // undefined
+      requestId: string   
     }
   
   }
@@ -29,12 +29,12 @@ export type CharacterId = typeof CHAR_SBER
     appeal: 'official' | 'no_official'
   }
   
-  interface AssistantEventCharacter extends AssistantEventGeneric {
+  export interface AssistantEventCharacter extends AssistantEventGeneric {
     type: 'character'
     character: AssistantCharacter
   }
 
-  interface AssistantEventSmartAppData extends AssistantEventGeneric {
+  export interface AssistantEventSmartAppData extends AssistantEventGeneric {
     type: 'smart_app_data'
     sub: string     // идентификатор пользователя
                     // "noN0Crr3wgIDB0zPleKresJJBnQWbTybFS96aH/CO1ag1UKZFmqfjY9pgDfQAAv8DJiarMJBCd+OSKUzNTk2jw0W/jbBIC6V/xwQdmSX5cA3bAbhWkZVtK9z3zFc8Mkh3O1nZa/qn3SAagVDNjZIB6p4Z9Wzb0Lm
