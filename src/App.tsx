@@ -80,7 +80,7 @@ export const App: FC = memo(() => {
     });
 
     assistantRef.current.on("command", (event) => {
-      notify(`command ${event}`);
+      notify(`command ${JSON.stringify(event)}`);
       // const {payload} = event;
       // dispatchAssistantAction(payload);
       setLog(JSON.stringify(event))
