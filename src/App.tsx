@@ -76,7 +76,6 @@ export const App: FC = memo(() => {
       //   dispatch(action);
       // }
       setLog(JSON.stringify(assistantRef.current))
-      showToast(log)
       handleAssistantDataEvent(action)
     });
 
@@ -118,7 +117,7 @@ export const App: FC = memo(() => {
 
       if (!action) return;
 
-      switch (action.type) {
+      switch (action.command) { //action.type
         case 'add':
           window.location.replace(link);
           break;
