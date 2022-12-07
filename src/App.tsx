@@ -81,7 +81,9 @@ export const App: FC = memo(() => {
     });
 
     assistantRef.current.on("command", (event) => {
-      notify(`command ${JSON.stringify(event)}`);
+      notify(`command ${event.type}`);
+      // const {payload} = event;
+      // dispatchAssistantAction(payload);
       setLog(JSON.stringify(event))
           console.log(`AssistantWrapper: _assistant.on(start)`, event);
         });
@@ -132,6 +134,7 @@ export const App: FC = memo(() => {
 
    const handleAssistantDataEvent = (event:any) => {
       console.log('AssistantWrapper.handleAssistantDataEvent: event:', event);
+      if ((event.type != "dynamic_insets"))
       notify(event.type);
       switch (event?.type) {
   
