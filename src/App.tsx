@@ -47,7 +47,7 @@ export const App: FC = memo(() => {
   //const [appState, dispatch] = useReducer(reducer, { notes: [] });
   const [character, setCharacter] = useState<CharacterId>(CHAR_SBER);
   const [log, setLog] = useState<string>("");
-  const notify = (event: any) => toast(event);
+  //const notify = (event: any) => toast(event);
   const list = [
     {
       title: "Сервисы Сбера в одном приложении",
@@ -80,7 +80,7 @@ export const App: FC = memo(() => {
     });
 
     assistantRef.current.on("command", (event) => {
-      notify(`command ${event.type}`);
+      //notify(`command ${event.type}`);
       // const {payload} = event;
       // dispatchAssistantAction(payload);
       setLog(JSON.stringify(event))
@@ -117,12 +117,12 @@ export const App: FC = memo(() => {
 
     const dispatchAssistantAction = (action: any) => {
       console.log('AssistantWrapper.dispatchAssistantAction:', action)
-      notify(`${action.type} ${action.command}`);
+      //notify(`${action.type} ${action.command}`);
       if (!action) return;
 
-      switch (action.command) { //action.type
+      switch (action.type) { //action.type
         case 'add':
-          notify("добавить")
+          //notify("добавить")
           window.location.replace(link);
           break;
 
@@ -135,7 +135,7 @@ export const App: FC = memo(() => {
    const handleAssistantDataEvent = (event:any) => {
       console.log('AssistantWrapper.handleAssistantDataEvent: event:', event);
       if ((event.type != "dynamic_insets")&&(event.type != "character"))
-      notify(event.type);
+      //notify(event.type);
       switch (event?.type) {
   
         case "character":
@@ -151,7 +151,7 @@ export const App: FC = memo(() => {
 
         case "smart_app_data":
           console.log(event.type);
-          notify(event.type);
+          //notify(event.type);
           handleAssistantDataEventSmartAppData(event);
           break
   
