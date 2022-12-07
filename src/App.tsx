@@ -134,7 +134,7 @@ export const App: FC = memo(() => {
 
    const handleAssistantDataEvent = (event:any) => {
       console.log('AssistantWrapper.handleAssistantDataEvent: event:', event);
-      if ((event.type != "dynamic_insets")&&(event.type != "character"))
+      //if ((event.type != "dynamic_insets")&&(event.type != "character"))
       //notify(event.type);
       switch (event?.type) {
   
