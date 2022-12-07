@@ -76,7 +76,6 @@ export const App: FC = memo(() => {
       // if (action) {
       //   dispatch(action);
       // }
-      setLog(JSON.stringify(assistantRef.current))
       handleAssistantDataEvent(action)
     });
 
@@ -135,7 +134,7 @@ export const App: FC = memo(() => {
 
    const handleAssistantDataEvent = (event:any) => {
       console.log('AssistantWrapper.handleAssistantDataEvent: event:', event);
-      if ((event.type != "dynamic_insets"))
+      if ((event.type != "dynamic_insets")&&(event.type != "character"))
       notify(event.type);
       switch (event?.type) {
   
