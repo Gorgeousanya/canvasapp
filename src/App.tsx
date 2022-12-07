@@ -139,6 +139,7 @@ export const App: FC = memo(() => {
           break;
         case "sdk_answer":
           console.log("sdk_answer", event);
+          handleAssistantDataEventSmartAppData(event);
           break;
 
         case "smart_app_data":
@@ -171,8 +172,8 @@ export const App: FC = memo(() => {
             <ListItem key={index} index={index + 1} title={item.title} subtitle={item.subtitle} />
           )
         }
-        <Button size="m" view="primary" onClick={()=>{console.log(isAndroid, link)}}>
-          <a href={link} target="_self"> Узнать больше и управлять</a>
+        <Button size="m" view="primary" onClick={()=>{window.location.replace(link)}}>
+          {/* <a href={link} target="_self"> Узнать больше и управлять</a> */}Узнать больше и управлять
         </Button>
         
       </div>
