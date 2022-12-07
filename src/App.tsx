@@ -12,15 +12,14 @@ import {
   AssistantAppState,
 } from "@sberdevices/assistant-client";
 import "./App.css";
-import { Button, Image, ToastProvider, useToast } from '@salutejs/plasma-ui';
-import { headline2, headline4 } from '@salutejs/plasma-tokens';
+import { Button, Image } from '@salutejs/plasma-ui';
+import { headline2 } from '@salutejs/plasma-tokens';
 import task from './assets/task.png'
 import ListItem from "./components/list-item/ListItem";
 import {
   isAndroid
 } from "react-device-detect";
 import { GlobalStyle } from './components/GlobalStyles';
-import { reducer } from "./store";
 import {
   CHAR_SBER,
   CharacterId,
@@ -48,7 +47,7 @@ export const App: FC = memo(() => {
   //const [appState, dispatch] = useReducer(reducer, { notes: [] });
   const [character, setCharacter] = useState<CharacterId>(CHAR_SBER);
   const [log, setLog] = useState<string>("");
-  const { showToast, hideToast } = useToast()
+  const notify = (event: any) => toast(event);
   const list = [
     {
       title: "Сервисы Сбера в одном приложении",
@@ -82,6 +81,7 @@ export const App: FC = memo(() => {
     });
 
     assistantRef.current.on("command", (event) => {
+      notify(`command ${JSON.stringify(event)}`);
       setLog(JSON.stringify(event))
           console.log(`AssistantWrapper: _assistant.on(start)`, event);
         });
@@ -116,7 +116,7 @@ export const App: FC = memo(() => {
 
     const dispatchAssistantAction = (action: any) => {
       console.log('AssistantWrapper.dispatchAssistantAction:', action)
-
+      notify(`${action.type} ${action.command}`);
       if (!action) return;
 
       switch (action.command) { //action.type
@@ -132,7 +132,7 @@ export const App: FC = memo(() => {
 
    const handleAssistantDataEvent = (event:any) => {
       console.log('AssistantWrapper.handleAssistantDataEvent: event:', event);
-      const notify = (event: any) => toast(event);
+      notify(event.type);
       switch (event?.type) {
   
         case "character":
