@@ -47,7 +47,7 @@ export const App: FC = memo(() => {
   //const [appState, dispatch] = useReducer(reducer, { notes: [] });
   const [character, setCharacter] = useState<CharacterId>(CHAR_SBER);
   const [log, setLog] = useState<string>("");
-  //const notify = (event: any) => toast(event);
+  const notify = (event: any) => toast(event);
   const list = [
     {
       title: "Сервисы Сбера в одном приложении",
@@ -117,12 +117,12 @@ export const App: FC = memo(() => {
 
     const dispatchAssistantAction = (action: any) => {
       console.log('AssistantWrapper.dispatchAssistantAction:', action)
-      //notify(`${action.type} ${action.command}`);
+      notify(`${action.type} `);
       if (!action) return;
 
       switch (action.type) { //action.type
         case 'add':
-          //notify("добавить")
+          notify("добавить")
           window.location.replace(link);
           break;
 
