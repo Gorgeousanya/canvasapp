@@ -151,7 +151,7 @@ export const App: FC = memo(() => {
 
         case "smart_app_data":
           console.log(event.type);
-          //notify(event.type);
+          notify(event.type);
           handleAssistantDataEventSmartAppData(event);
           break
   
