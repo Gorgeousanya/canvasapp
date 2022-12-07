@@ -136,7 +136,7 @@ export const App: FC = memo(() => {
       switch (event?.type) {
   
         case "character":
-          notify(event.type);
+          // notify(event.type);
           console.log(event.type)
           handleAssistantDataEventCharacter(event);
           break;
