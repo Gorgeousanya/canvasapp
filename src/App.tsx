@@ -123,6 +123,7 @@ export const App: FC = memo(() => {
 
       switch (action.command) { //action.type
         case 'add':
+          notify("добавить")
           window.location.replace(link);
           break;
 
