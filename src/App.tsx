@@ -141,8 +141,8 @@ export const App: FC = memo(() => {
           handleAssistantDataEventCharacter(event);
           break;
         case "sdk_answer":
-          notify(event.type);
-          console.log("sdk_answer", event);
+          // notify(event.type);
+          // console.log("sdk_answer", event);
           handleAssistantDataEventSmartAppData(event);
           break;
 
