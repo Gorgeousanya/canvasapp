@@ -80,7 +80,7 @@ export const App: FC = memo(() => {
     });
 
     assistantRef.current.on("command", (event) => {
-      //notify(`command ${event.type}`);
+      notify(`command ${event}`);
       // const {payload} = event;
       // dispatchAssistantAction(payload);
       setLog(JSON.stringify(event))
@@ -117,7 +117,7 @@ export const App: FC = memo(() => {
 
     const dispatchAssistantAction = (action: any) => {
       console.log('AssistantWrapper.dispatchAssistantAction:', action)
-      notify(`${action.type} `);
+      notify(`${action.type} ${action.command}`);
       if (!action) return;
 
       switch (action.type) { //action.type
