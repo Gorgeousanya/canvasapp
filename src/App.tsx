@@ -135,6 +135,7 @@ export const App: FC = memo(() => {
       switch (event?.type) {
   
         case "character":
+          console.log(event.type)
           handleAssistantDataEventCharacter(event);
           break;
         case "sdk_answer":
@@ -143,6 +144,7 @@ export const App: FC = memo(() => {
           break;
 
         case "smart_app_data":
+          console.log(event.type);
           handleAssistantDataEventSmartAppData(event);
           break
   
