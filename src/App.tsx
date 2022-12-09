@@ -12,7 +12,8 @@ import {
   AssistantAppState,
 } from "@sberdevices/assistant-client";
 import "./App.css";
-import { Button, Image } from '@salutejs/plasma-ui';
+import { Button, Image, Header, ActionButton } from '@salutejs/plasma-ui';
+import { IconPersone } from "@salutejs/plasma-icons";
 import { headline2 } from '@salutejs/plasma-tokens';
 import task from './assets/task.png'
 import ListItem from "./components/list-item/ListItem";
@@ -79,10 +80,10 @@ export const App: FC = memo(() => {
       handleAssistantDataEvent(action)
     });
 
-    assistantRef.current.on("command", (event) => {
+    assistantRef.current.on("command", (event:any) => {
       notify(`command ${JSON.stringify(event)}`);
       // const {payload} = event;
-      //dispatchAssistantAction(event.type);
+      dispatchAssistantAction(event?.command);
     })
 
      assistantRef.current.on("start", () => {
@@ -115,10 +116,10 @@ export const App: FC = memo(() => {
 
     const dispatchAssistantAction = (action: any) => {
       console.log('AssistantWrapper.dispatchAssistantAction:', action)
-      notify(`action ${action.type} ${action.smart_app_data.command}`);
+      notify(`action ${action} `);
       if (!action) return;
 
-      switch (action.command) { //action.type
+      switch (action) { //action.type
         case 'add':
           notify("добавить")
           window.location.replace(link);
@@ -161,8 +162,8 @@ export const App: FC = memo(() => {
     
   return (
     <GlobalStyle character={character}>
-      <ToastContainer />
     <main className="container">
+      <Button size="s" view="primary" text="Профиль" contentRight={<IconPersone/>} style={{marginLeft: "auto", marginBottom: "16px"}}></Button>
       <Image
         src={task}
         width="120px"
