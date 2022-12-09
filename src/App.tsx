@@ -80,9 +80,10 @@ export const App: FC = memo(() => {
     });
 
     assistantRef.current.on("command", (event) => {
-      notify(`command ${JSON.stringify(event.type)}`);
+      notify(`command ${JSON.stringify(event)}`);
       // const {payload} = event;
-      dispatchAssistantAction(event.type);})
+      //dispatchAssistantAction(event.type);
+    })
 
      assistantRef.current.on("start", () => {
         console.log(`AssistantWrapper: _assistant.on(start)`);
@@ -114,7 +115,7 @@ export const App: FC = memo(() => {
 
     const dispatchAssistantAction = (action: any) => {
       console.log('AssistantWrapper.dispatchAssistantAction:', action)
-      notify(`${action.type} ${action.command}`);
+      notify(`action ${action.type} ${action.smart_app_data.command}`);
       if (!action) return;
 
       switch (action.command) { //action.type
