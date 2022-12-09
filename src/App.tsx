@@ -80,12 +80,9 @@ export const App: FC = memo(() => {
     });
 
     assistantRef.current.on("command", (event) => {
-      notify(`command ${JSON.stringify(event)}`);
+      notify(`command ${JSON.stringify(event.type)}`);
       // const {payload} = event;
-      // dispatchAssistantAction(payload);
-      setLog(JSON.stringify(event))
-          console.log(`AssistantWrapper: _assistant.on(start)`, event);
-        });
+      dispatchAssistantAction(event.type);})
 
      assistantRef.current.on("start", () => {
         console.log(`AssistantWrapper: _assistant.on(start)`);
@@ -120,7 +117,7 @@ export const App: FC = memo(() => {
       notify(`${action.type} ${action.command}`);
       if (!action) return;
 
-      switch (action.type) { //action.type
+      switch (action.command) { //action.type
         case 'add':
           notify("добавить")
           window.location.replace(link);
@@ -151,7 +148,7 @@ export const App: FC = memo(() => {
 
         case "smart_app_data":
           console.log(event.type);
-          notify(event.type);
+          // notify(event.type);
           handleAssistantDataEventSmartAppData(event);
           break
   
