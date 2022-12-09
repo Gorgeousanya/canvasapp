@@ -7,19 +7,19 @@ import React, {
   useState,
 } from "react";
 import {
+  createBrowserRouter,
+  RouterProvider,
+  Route,
+  Link
+} from "react-router-dom";
+import Profile from './pages/Profile'
+import Home from './pages/Home'
+import { link } from './assets/data'
+import {
   createSmartappDebugger,
   createAssistant,
   AssistantAppState,
 } from "@sberdevices/assistant-client";
-import "./App.css";
-import { Button, Image, Header, ActionButton } from '@salutejs/plasma-ui';
-import { IconPersone } from "@salutejs/plasma-icons";
-import { headline2 } from '@salutejs/plasma-tokens';
-import task from './assets/task.png'
-import ListItem from "./components/list-item/ListItem";
-import {
-  isAndroid
-} from "react-device-detect";
 import { GlobalStyle } from './components/GlobalStyles';
 import {
   CHAR_SBER,
@@ -27,7 +27,7 @@ import {
   AssistantCharacter
 } from './types'
 import { ToastContainer, toast } from 'react-toastify';
-  import 'react-toastify/dist/ReactToastify.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const initializeAssistant = (getState: any) => {
@@ -40,31 +40,26 @@ const initializeAssistant = (getState: any) => {
       getState,
     });
   }
-  
+
   return createAssistant({ getState });
 };
+
+export const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <Home />,
+    },
+    {
+      path: "/profile",
+      element: <Profile />
+    }
+  ]);
 
 export const App: FC = memo(() => {
   //const [appState, dispatch] = useReducer(reducer, { notes: [] });
   const [character, setCharacter] = useState<CharacterId>(CHAR_SBER);
-  const [log, setLog] = useState<string>("");
   const notify = (event: any) => toast(event);
-  const list = [
-    {
-      title: "Сервисы Сбера в одном приложении",
-      subtitle: "Информация об инвестициях, страховках и пенсии"
-    },
-    {
-      title: "Вход и оплата в экосистеме по Сбер ID",
-      subtitle: "Не нужно вспоминать пароль и вводить номер карты"
-    },
-    {
-      title: "Персональные предложения и скидки",
-      subtitle: "Возможность получать скидки от партнёров и индивидуальные условия от банка"
-    },
-  ]
-  const link = isAndroid ? "android-app://ru.sberbankmobile/sberbankid/agreement?servicesCode=25?" :
-    "sbolonline://sberbankid/omniconsent?servicesCode=25"
+
   const assistantStateRef = useRef<AssistantAppState>();
   const assistantRef = useRef<ReturnType<typeof createAssistant>>();
 
@@ -72,120 +67,90 @@ export const App: FC = memo(() => {
     assistantRef.current = initializeAssistant(() => assistantStateRef.current);
     //alert(JSON.stringify(assistantRef.current, null, 4));
     console.log(assistantRef.current)
-    assistantRef.current.on("data", ( action : any) => {
-      //alert(action);
+    assistantRef.current.on("data", (action: any) => {
       // if (action) {
       //   dispatch(action);
       // }
       handleAssistantDataEvent(action)
     });
 
-    assistantRef.current.on("command", (event:any) => {
+    assistantRef.current.on("command", (event: any) => {
       //notify(`command ${JSON.stringify(event)}`);
       // const {payload} = event;
       dispatchAssistantAction(event?.command);
     })
 
-     assistantRef.current.on("start", () => {
-        console.log(`AssistantWrapper: _assistant.on(start)`);
-      });
-  
+    assistantRef.current.on("start", () => {
+      console.log(`AssistantWrapper: _assistant.on(start)`);
+    });
+
     //   assistantRef.current.on("ANSWER_TO_USER", (event) => {
     //     console.log(`AssistantWrapper: _assistant.on(raw)`, event);
     //   });
-    
+
   }, []);
 
-   const handleAssistantDataEventCharacter = (event: any) => {
-          console.log('AssistantWrapper.handleAssistantEventCharacter: character.id:', event.character.id);
-          //emit('event-character', event.character);
-          setCharacter(event.character?.id)
-        }
+  const handleAssistantDataEventSmartAppData = (event: any) => {
+    console.log('AssistantWrapper.handleAssistantEventSmartAppData: event:', event);
 
-    const handleAssistantDataEventSmartAppData = (event: any) => {
-      console.log('AssistantWrapper.handleAssistantEventSmartAppData: event:', event);
-
-      if (event.sub !== undefined) {
-        // this.emit('event-sub', event.sub);
-        // /*await*/ this._App.handleAssistantSub(event.sub);
-      }
-
-      const {action} = event;
-      dispatchAssistantAction(action);
+    if (event.sub !== undefined) {
+      // this.emit('event-sub', event.sub);
+      // /*await*/ this._App.handleAssistantSub(event.sub);
     }
 
-    const dispatchAssistantAction = (action: any) => {
-      // notify(`action ${action} `);
-      if (!action) return;
+    const { action } = event;
+    dispatchAssistantAction(action);
+  }
 
-      switch (action) { //action.type
-        case 'add':
-          //notify("добавить")
-          setTimeout(() => window.location.replace(link), 3000);
-          break;
+  const dispatchAssistantAction = (action: any) => {
+    // notify(`action ${action} `);
+    if (!action) return;
 
-        default:
-        // console.warn('dispatchAssistantAction: Unknown action.type:', action.type)
+    switch (action) { //action.type
+      case 'add':
+        //notify("добавить")
+        setTimeout(() => window.location.replace(link), 3000);
+        break;
 
-      }
+      default:
+      // console.warn('dispatchAssistantAction: Unknown action.type:', action.type)
+
+    }
+  }
+
+  const handleAssistantDataEvent = (event: any) => {
+    console.log('AssistantWrapper.handleAssistantDataEvent: event:', event);
+    switch (event?.type) {
+      case "character":
+        // notify(event.type);
+        console.log(event.type)
+        setCharacter(event.character?.id)
+        break;
+      case "sdk_answer":
+        // notify(event.type);
+        handleAssistantDataEventSmartAppData(event);
+        break;
+
+      case "smart_app_data":
+        console.log(event.type);
+        // notify(event.type);
+        handleAssistantDataEventSmartAppData(event);
+        break
+
+      default:
+        break
     }
 
-   const handleAssistantDataEvent = (event:any) => {
-      console.log('AssistantWrapper.handleAssistantDataEvent: event:', event);
-      //if ((event.type != "dynamic_insets")&&(event.type != "character"))
-      //notify(event.type);
-      switch (event?.type) {
+  }
+
+
   
-        case "character":
-          // notify(event.type);
-          console.log(event.type)
-          handleAssistantDataEventCharacter(event);
-          break;
-        case "sdk_answer":
-          // notify(event.type);
-          // console.log("sdk_answer", event);
-          handleAssistantDataEventSmartAppData(event);
-          break;
 
-        case "smart_app_data":
-          console.log(event.type);
-          // notify(event.type);
-          handleAssistantDataEventSmartAppData(event);
-          break
-  
-        default:
-          break
-      }
-      
-    }
-    
   return (
     <GlobalStyle character={character}>
-    <main className="container">
-      <Button size="s" view="primary" text="Профиль" contentRight={<IconPersone/>} style={{marginLeft: "auto", marginBottom: "16px"}}></Button>
-      <Image
-        src={task}
-        width="120px"
-        height="120px"
-        alt="Картинка для примера"
-      />
-      <h2 style={headline2}>
-        Бесплатная услуга
-        <br />
-        "Удобный доступ"
-      </h2>
-      <div style={{ display: "flex", flexDirection: "column", }}>
-        {
-          list.map((item, index) =>
-            <ListItem key={index} index={index + 1} title={item.title} subtitle={item.subtitle} />
-          )
-        }
-        <Button size="m" view="primary" onClick={()=>{window.location.replace(link)}}>
-          {/* <a href={link} target="_self"> Узнать больше и управлять</a> */}Узнать больше и управлять
-        </Button>
-        
-      </div>
-    </main>
+      <React.StrictMode>
+        <RouterProvider router={router} />
+      </React.StrictMode>
     </GlobalStyle>
   );
 });

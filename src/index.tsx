@@ -5,13 +5,18 @@ import { App } from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { DeviceThemeProvider, SSRProvider } from '@salutejs/plasma-ui';
 import { GlobalStyle } from './components/GlobalStyles';
+import {
+    createBrowserRouter,
+    RouterProvider,
+    Route,
+    Link
+  } from "react-router-dom";
 
 ReactDOM.render(
     <DeviceThemeProvider>
         <SSRProvider>
-            
-            {/* <GlobalStyle /> */}
-            <App />
+                {/* <GlobalStyle /> */}
+                <App />
         </SSRProvider>
     </DeviceThemeProvider>,
     document.getElementById('root'),
