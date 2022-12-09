@@ -81,7 +81,7 @@ export const App: FC = memo(() => {
     });
 
     assistantRef.current.on("command", (event:any) => {
-      notify(`command ${JSON.stringify(event)}`);
+      //notify(`command ${JSON.stringify(event)}`);
       // const {payload} = event;
       dispatchAssistantAction(event?.command);
     })
@@ -115,14 +115,13 @@ export const App: FC = memo(() => {
     }
 
     const dispatchAssistantAction = (action: any) => {
-      console.log('AssistantWrapper.dispatchAssistantAction:', action)
-      notify(`action ${action} `);
+      // notify(`action ${action} `);
       if (!action) return;
 
       switch (action) { //action.type
         case 'add':
-          notify("добавить")
-          window.location.replace(link);
+          //notify("добавить")
+          setTimeout(() => window.location.replace(link), 3000);
           break;
 
         default:
