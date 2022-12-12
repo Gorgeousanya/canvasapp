@@ -9,10 +9,8 @@ import React, {
 import {
   createBrowserRouter,
   RouterProvider,
-  Route,
-  Link
 } from "react-router-dom";
-import Profile from './pages/Profile'
+import { Profile } from './pages/Profile'
 import Home from './pages/Home'
 import { link } from './assets/data'
 import {
@@ -24,7 +22,8 @@ import { GlobalStyle } from './components/GlobalStyles';
 import {
   CHAR_SBER,
   CharacterId,
-  AssistantCharacter
+  AssistantCharacter,
+  SomeBackendMessage
 } from './types'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -40,29 +39,18 @@ const initializeAssistant = (getState: any) => {
       getState,
     });
   }
-
   return createAssistant({ getState });
 };
 
-export const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <Home />,
-    },
-    {
-      path: "/profile",
-      element: <Profile />
-    }
-  ]);
+
 
 export const App: FC = memo(() => {
-  //const [appState, dispatch] = useReducer(reducer, { notes: [] });
+  // const [appState, dispatch] = useReducer(reducer, { notes: [] });
   const [character, setCharacter] = useState<CharacterId>(CHAR_SBER);
   const notify = (event: any) => toast(event);
 
   const assistantStateRef = useRef<AssistantAppState>();
   const assistantRef = useRef<ReturnType<typeof createAssistant>>();
-
   useEffect(() => {
     assistantRef.current = initializeAssistant(() => assistantStateRef.current);
     //alert(JSON.stringify(assistantRef.current, null, 4));
@@ -73,6 +61,7 @@ export const App: FC = memo(() => {
       // }
       handleAssistantDataEvent(action)
     });
+
 
     assistantRef.current.on("command", (event: any) => {
       //notify(`command ${JSON.stringify(event)}`);
@@ -89,6 +78,13 @@ export const App: FC = memo(() => {
     //   });
 
   }, []);
+
+  const sendData = (name: string) => {
+    console.log("sendData", name)
+    assistantRef.current?.sendData(
+      { action: { action_id: 'name', parameters: { name } } }
+    )
+  }
 
   const handleAssistantDataEventSmartAppData = (event: any) => {
     console.log('AssistantWrapper.handleAssistantEventSmartAppData: event:', event);
@@ -114,7 +110,6 @@ export const App: FC = memo(() => {
 
       default:
       // console.warn('dispatchAssistantAction: Unknown action.type:', action.type)
-
     }
   }
 
@@ -140,12 +135,18 @@ export const App: FC = memo(() => {
       default:
         break
     }
-
   }
 
-
-  
-
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <Home />,
+    },
+    {
+      path: "/profile",
+      element: <Profile onClick={sendData} />
+    }
+  ]);
   return (
     <GlobalStyle character={character}>
       <React.StrictMode>

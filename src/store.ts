@@ -6,21 +6,31 @@ type Note = {
 
 type State = {
   notes: Array<Note>;
+  value: string;
+  flag: boolean;
 };
 
 type Action =
   | {
-      type: "add_note";
-      note: string;
-    }
+    type: "add_note";
+    note: string;
+  }
   | {
-      type: "done_note";
-      id: string;
-    }
+    type: "done_note";
+    id: string;
+  }
   | {
-      type: "delete_note";
-      id: string;
-    };
+    type: "delete_note";
+    id: string;
+  }
+  | {
+    type: "change_value";
+    value: string;
+  }
+  | {
+    type: "change_flag";
+    flag: boolean;
+  };
 
 export const reducer = (state: State, action: Action) => {
   switch (action.type) {
@@ -49,6 +59,18 @@ export const reducer = (state: State, action: Action) => {
       return {
         ...state,
         notes: state.notes.filter(({ id }) => id !== action.id),
+      };
+
+    case "change_value":
+      return {
+        ...state,
+        value: action.value,
+      };
+
+    case "change_flag":
+      return {
+        ...state,
+        flag: action.flag,
       };
 
     default:

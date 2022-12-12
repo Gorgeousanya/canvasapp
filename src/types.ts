@@ -1,3 +1,5 @@
+import { AssistantSmartAppCommand } from '@sberdevices/assistant-client';
+
 export type TListItem = {
     index: number,
     title: string,
@@ -46,4 +48,11 @@ export type CharacterId = typeof CHAR_SBER
     // sub: "noN0Crr3wgIDB0zPleKresJJBnQWbTybFS96aH/CO1ag1UKZFmqfjY9pgDfQAAv8DJiarMJBCd+OSKUzNTk2jw0W/jbBIC6V/xwQdmSX5cA3bAbhWkZVtK9z3zFc8Mkh3O1nZa/qn3SAagVDNjZIB6p4Z9Wzb0Lm/uzDjpy3qh0="
     // type: "smart_app_data"
     // user_id: "webdbg_userid_rwe0x9uv3qbmr4sw5uxfc"
+  }
+
+  export interface SomeBackendMessage extends AssistantSmartAppCommand {
+    type: 'smart_app_data',
+    payload: {
+      data: any,
+    },
   }

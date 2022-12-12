@@ -1,16 +1,12 @@
   import {
-    createBrowserRouter,
-    RouterProvider,
-    Route,
     Link
   } from "react-router-dom";
   import "./App.css";
-  import { Button, Image, Header, ActionButton } from '@salutejs/plasma-ui';
+  import { Button, Image } from '@salutejs/plasma-ui';
   import { IconPersone } from "@salutejs/plasma-icons";
   import { headline2 } from '@salutejs/plasma-tokens';
   import task from '../assets/task.png'
   import ListItem from "../components/list-item/ListItem";
-  import { ToastContainer, toast } from 'react-toastify';
   import 'react-toastify/dist/ReactToastify.css';
   import { link, list } from  '../assets/data'
   
