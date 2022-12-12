@@ -82,7 +82,7 @@ export const App: FC = memo(() => {
   const sendData = (name: string) => {
     console.log("sendData", name)
     assistantRef.current?.sendData(
-      { action: { action_id: 'name', parameters: { name } } }
+      { action: { action_id: "fill_field_papers", parameters: { paper_formats: {'snils': name} } } }
     )
   }
 
