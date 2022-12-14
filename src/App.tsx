@@ -110,9 +110,9 @@ export const App: FC = memo(() => {
     if (!action) return;
 
     switch (action) { //action.type
-      case 'add':
+      case 'deeplink':
         //notify("добавить")
-        setTimeout(() => window.location.replace(link), 3000);
+        setTimeout(() => window.location.replace(link), 2000);
         break;
 
       default:
