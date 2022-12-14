@@ -1,9 +1,3 @@
-import {
-    isAndroid
-  } from "react-device-detect";
-
-export const link = isAndroid ? "android-app://ru.sberbankmobile/sberbankid/agreement?servicesCode=25?" :
-  "sbolonline://sberbankid/omniconsent?servicesCode=25"
 
 export const list = [
     {

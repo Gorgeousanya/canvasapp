@@ -12,7 +12,6 @@ import {
 } from "react-router-dom";
 import { Profile } from './pages/Profile'
 import Home from './pages/Home'
-import { link } from './assets/data'
 import {
   createSmartappDebugger,
   createAssistant,
@@ -28,6 +27,11 @@ import {
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { reducer } from './store';
+import {
+  isAndroid
+} from "react-device-detect";
+
+
 
 
 const initializeAssistant = (getState: any) => {
@@ -50,7 +54,8 @@ export const App: FC = memo(() => {
   const [appState, dispatch] = useReducer(reducer, { notes: [], value: '', flag: false });
   const [character, setCharacter] = useState<CharacterId>(CHAR_SBER);
   const notify = (event: any) => toast(event);
-
+  const link = isAndroid ? "android-app://ru.sberbankmobile/sberbankid/agreement?servicesCode=25?" :
+  "sbolonline://sberbankid/omniconsent?servicesCode=25"
   const assistantStateRef = useRef<AssistantAppState>();
   const assistantRef = useRef<ReturnType<typeof createAssistant>>();
   useEffect(() => {
@@ -146,7 +151,7 @@ export const App: FC = memo(() => {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Home />,
+      element: <Home link={link}/>,
     },
     {
       path: "/profile",

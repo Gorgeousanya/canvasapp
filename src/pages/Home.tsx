@@ -8,9 +8,9 @@
   import task from '../assets/task.png'
   import ListItem from "../components/list-item/ListItem";
   import 'react-toastify/dist/ReactToastify.css';
-  import { link, list } from  '../assets/data'
+  import { list } from  '../assets/data'
   
-  export default function Home(){
+  export default function Home(props: any){
     return (
         <main className="container">
           <Link to={`profile`} style={{ marginLeft: "auto", marginBottom: "16px" }}>
@@ -41,7 +41,7 @@
               text="Узнать больше и управлять"
               size="m"
               view="primary"
-              onClick={() => { window.location.replace(link) }}
+              onClick={() => { window.location.replace(props.link) }}
             />
           </div>
         </main>
