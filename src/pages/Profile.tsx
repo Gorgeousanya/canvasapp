@@ -8,6 +8,23 @@ import React, {
 export const Profile = (props: any) => {
     const [flag, setFlag] = useState<boolean>(false)
     const [status, setStatus] = useState<any>(undefined)
+
+    const checkSnils = (checkedValue: string) => {
+        let checkSum = parseInt(checkedValue.slice(9), 10);
+
+        let sum = (parseInt(checkedValue[0]) * 9 + parseInt(checkedValue[1]) * 8 + parseInt(checkedValue[2]) * 7 + parseInt(checkedValue[3]) * 6 + parseInt(checkedValue[4]) * 5 + parseInt(checkedValue[5]) * 4 + parseInt(checkedValue[6]) * 3 + parseInt(checkedValue[7]) * 2 + parseInt(checkedValue[8]) * 1);
+
+        if (sum < 100 && sum == checkSum) {
+            return true;
+        } else if ((sum == 100 || sum == 101) && checkSum == 0) {
+            return true;
+        } else if (sum > 101 && (sum % 101 == checkSum || (sum % 101 == 100 && checkSum == 0))) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     return (
         <main className="container">
             <Header
@@ -45,8 +62,7 @@ export const Profile = (props: any) => {
                     view="primary"
                     onClick={
                         () => {
-                            if ((props.value.replace(/[^\d]/g, '') != "")&&(props.value.replace(/[^\d]/g, '').length == 11)&&(parseInt(props.value.replace(/[^\d]/g, ''))))
-                            {
+                            if ((checkSnils(props.value.replace(/[^\d]/g, '')))&&(props.value.replace(/[^\d]/g, '') != "") && (props.value.replace(/[^\d]/g, '').length == 11) && (parseInt(props.value.replace(/[^\d]/g, '')))) {
                                 setFlag(true)
                                 setStatus(undefined)
                                 props.onClick(props.value.replace(/[^\d]/g, ''));
