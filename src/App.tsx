@@ -27,6 +27,7 @@ import {
 } from './types'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { reducer } from './store';
 
 
 const initializeAssistant = (getState: any) => {
@@ -46,6 +47,7 @@ const initializeAssistant = (getState: any) => {
 
 export const App: FC = memo(() => {
   // const [appState, dispatch] = useReducer(reducer, { notes: [] });
+  const [appState, dispatch] = useReducer(reducer, { notes: [], value: '', flag: false });
   const [character, setCharacter] = useState<CharacterId>(CHAR_SBER);
   const notify = (event: any) => toast(event);
 
@@ -137,6 +139,10 @@ export const App: FC = memo(() => {
     }
   }
 
+  const changeValue = (event: any) => {
+    dispatch({ type: "change_value", value: event})
+  }
+
   const router = createBrowserRouter([
     {
       path: "/",
@@ -144,7 +150,7 @@ export const App: FC = memo(() => {
     },
     {
       path: "/profile",
-      element: <Profile onClick={sendData} />
+      element: <Profile onClick={sendData} value={appState.value} changeValue={changeValue}/>
     }
   ]);
   return (
