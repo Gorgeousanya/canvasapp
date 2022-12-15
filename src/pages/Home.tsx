@@ -9,6 +9,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function Home(props: any) {
+  const notify = (event: any) => toast(event);
+
   return (
     <main className="container">
       <ToastContainer />
@@ -33,7 +35,7 @@ export default function Home(props: any) {
           text="Узнать больше и управлять"
           size="m"
           view="primary"
-          onClick={() => { window.location.replace(props.link) }}
+          onClick={() => { window.location.replace(props.link); notify(props.link) }}
         />
       </div>
     </main>
