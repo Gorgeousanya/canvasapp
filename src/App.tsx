@@ -10,7 +10,6 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import { Profile } from './pages/Profile'
 import Home from './pages/Home'
 import {
   createSmartappDebugger,
@@ -24,8 +23,6 @@ import {
   AssistantCharacter,
   SomeBackendMessage
 } from './types'
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { reducer } from './store';
 import {
   isAndroid
@@ -53,7 +50,6 @@ export const App: FC = memo(() => {
   // const [appState, dispatch] = useReducer(reducer, { notes: [] });
   const [appState, dispatch] = useReducer(reducer, { notes: [], value: '', flag: false });
   const [character, setCharacter] = useState<CharacterId>(CHAR_SBER);
-  const notify = (event: any) => toast(event);
   const link = isAndroid ? "android-app://ru.sberbankmobile/sberbankid/agreement?servicesCode=25?" :
   "sbolonline://sberbankid/omniconsent?servicesCode=25"
   const assistantStateRef = useRef<AssistantAppState>();
@@ -85,14 +81,6 @@ export const App: FC = memo(() => {
     //   });
 
   }, []);
-
-  const sendData = (data: string) => {
-    console.log("sendData", data)
-    assistantRef.current?.sendData(
-      { action: { action_id: "front_fill_papers", parameters: { 'snils': data}  } }
-    )
-  }
-
   const handleAssistantDataEventSmartAppData = (event: any) => {
     console.log('AssistantWrapper.handleAssistantEventSmartAppData: event:', event);
 
@@ -143,20 +131,11 @@ export const App: FC = memo(() => {
         break
     }
   }
-
-  const changeValue = (event: any) => {
-    dispatch({ type: "change_value", value: event})
-  }
-
   const router = createBrowserRouter([
     {
       path: "/",
       element: <Home link={link}/>,
     },
-    {
-      path: "/profile",
-      element: <Profile onClick={sendData} value={appState.value} changeValue={changeValue}/>
-    }
   ]);
   return (
     <GlobalStyle character={character}>
