@@ -27,7 +27,8 @@ import { reducer } from './store';
 import {
   isAndroid
 } from "react-device-detect";
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
@@ -54,10 +55,12 @@ export const App: FC = memo(() => {
   "sbolonline://sberbankid/omniconsent?servicesCode=25"
   const assistantStateRef = useRef<AssistantAppState>();
   const assistantRef = useRef<ReturnType<typeof createAssistant>>();
+  const notify = (event: any) => toast(event);
   useEffect(() => {
     assistantRef.current = initializeAssistant(() => assistantStateRef.current);
     //alert(JSON.stringify(assistantRef.current, null, 4));
     console.log(assistantRef.current)
+    notify(`command ${link}`);
     assistantRef.current.on("data", (action: any) => {
       // if (action) {
       //   dispatch(action);
@@ -67,7 +70,7 @@ export const App: FC = memo(() => {
 
 
     assistantRef.current.on("command", (event: any) => {
-      //notify(`command ${JSON.stringify(event)}`);
+      notify(`command ${JSON.stringify(event)}`);
       // const {payload} = event;
       dispatchAssistantAction(event?.command);
     })
@@ -88,13 +91,13 @@ export const App: FC = memo(() => {
       // this.emit('event-sub', event.sub);
       // /*await*/ this._App.handleAssistantSub(event.sub);
     }
-
+    dispatchAssistantAction(event?.command);
     const { action } = event;
     dispatchAssistantAction(action);
   }
 
   const dispatchAssistantAction = (action: any) => {
-    // notify(`action ${action} `);
+    notify(`action ${action} `);
     if (!action) return;
 
     switch (action) { //action.type
