@@ -119,18 +119,10 @@ export const App: FC = memo(() => {
         break
     }
   }
-  const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <Home link={link}/>,
-    },
-  ]);
   return (
     <GlobalStyle character={character}>
-      <React.StrictMode>
-        <RouterProvider router={router} />
-        <ToastContainer />
-      </React.StrictMode>
+      <ToastContainer />
+      <Home link={link}/>
     </GlobalStyle>
   );
 });
