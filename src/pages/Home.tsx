@@ -3,7 +3,6 @@ import { Button, Image } from '@salutejs/plasma-ui';
 import { headline2 } from '@salutejs/plasma-tokens';
 import task from '../assets/task.png'
 import ListItem from "../components/list-item/ListItem";
-import 'react-toastify/dist/ReactToastify.css';
 import { list } from '../assets/data'
 
 export default function Home(props: any) {
