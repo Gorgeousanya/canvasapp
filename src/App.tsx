@@ -54,7 +54,6 @@ export const App: FC = memo(() => {
     assistantRef.current = initializeAssistant(() => assistantStateRef.current);
     //alert(JSON.stringify(assistantRef.current, null, 4));
     console.log(assistantRef.current)
-    notify(`isIOS ${isIOS} ${link}`);
     assistantRef.current.on("data", (action: any) => {
       // if (action) {
       //   dispatch(action);
@@ -64,7 +63,6 @@ export const App: FC = memo(() => {
 
 
     assistantRef.current.on("command", (event: any) => {
-      notify(`command ${JSON.stringify(event)}`);
       // const {payload} = event;
       dispatchAssistantAction(event?.command);
     })
@@ -86,7 +84,6 @@ export const App: FC = memo(() => {
   }
 
   const dispatchAssistantAction = (action: any) => {
-    notify(`action ${action} `);
     if (!action) return;
 
     switch (action) { //action.type

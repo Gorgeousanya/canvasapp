@@ -32,12 +32,11 @@ export default function Home(props: any) {
           )
         }
         <Button
+          text="Узнать больше и управлять"
           size="m"
           view="primary"
-          onClick={() => { notify(props.link) }}
-        >
-          <a href={props.link} target="_self">Узнать больше и управлять</a>
-        </Button>
+          onClick={() => { window.open(props.link, '_self') }}
+        />
       </div>
     </main>
   );
