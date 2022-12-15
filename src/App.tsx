@@ -91,7 +91,7 @@ export const App: FC = memo(() => {
 
     switch (action) { //action.type
       case 'deeplink':
-        setTimeout(() => window.location.href=link, 2000);
+        setTimeout(() => window.open(link, '_blank'), 2000);
         break;
 
       default:

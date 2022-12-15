@@ -36,7 +36,7 @@ export default function Home(props: any) {
           view="primary"
           onClick={() => { notify(props.link) }}
         >
-          <a href={props.link}>Узнать больше и управлять</a>
+          <a href={props.link} target="_self">Узнать больше и управлять</a>
         </Button>
       </div>
     </main>
