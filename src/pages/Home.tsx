@@ -35,7 +35,7 @@ export default function Home(props: any) {
           text="Узнать больше и управлять"
           size="m"
           view="primary"
-          onClick={() => { window.location.replace(props.link); notify(props.link) }}
+          onClick={() => { window.location.href=props.link; notify(props.link) }}
         />
       </div>
     </main>
