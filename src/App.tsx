@@ -25,7 +25,7 @@ import {
 } from './types'
 import { reducer } from './store';
 import {
-  isAndroid
+  isIOS
 } from "react-device-detect";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -45,8 +45,8 @@ const initializeAssistant = (getState: any) => {
 
 export const App: FC = memo(() => {
   const [character, setCharacter] = useState<CharacterId>(CHAR_SBER);
-  const link = isAndroid ? "android-app://ru.sberbankmobile/sberbankid/agreement?servicesCode=25?" :
-  "sbolonline://sberbankid/omniconsent?servicesCode=25"
+  const link = isIOS ? "sbolonline://sberbankid/omniconsent?servicesCode=25" : "android-app://ru.sberbankmobile/sberbankid/agreement?servicesCode=25?"
+  
   const assistantStateRef = useRef<AssistantAppState>();
   const assistantRef = useRef<ReturnType<typeof createAssistant>>();
   const notify = (event: any) => toast(event);
@@ -54,7 +54,7 @@ export const App: FC = memo(() => {
     assistantRef.current = initializeAssistant(() => assistantStateRef.current);
     //alert(JSON.stringify(assistantRef.current, null, 4));
     console.log(assistantRef.current)
-    notify(` ${link}`);
+    notify(`isIOS ${isIOS} ${link}`);
     assistantRef.current.on("data", (action: any) => {
       // if (action) {
       //   dispatch(action);
@@ -129,6 +129,7 @@ export const App: FC = memo(() => {
     <GlobalStyle character={character}>
       <React.StrictMode>
         <RouterProvider router={router} />
+        <ToastContainer />
       </React.StrictMode>
     </GlobalStyle>
   );

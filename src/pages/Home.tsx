@@ -5,9 +5,13 @@ import task from '../assets/task.png'
 import ListItem from "../components/list-item/ListItem";
 import { list } from '../assets/data'
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 export default function Home(props: any) {
   return (
     <main className="container">
+      <ToastContainer />
       <Image
         src={task}
         width="120px"
