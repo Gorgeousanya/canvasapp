@@ -28,13 +28,8 @@ import {
   isAndroid
 } from "react-device-detect";
 
-
-
-
 const initializeAssistant = (getState: any) => {
   if (process.env.NODE_ENV === "development") {
-    console.log(getState)
-    //alert(getState)
     return createSmartappDebugger({
       token: process.env.REACT_APP_TOKEN ?? "",
       initPhrase: `Запусти ${process.env.REACT_APP_SMARTAPP}`,
@@ -44,11 +39,7 @@ const initializeAssistant = (getState: any) => {
   return createAssistant({ getState });
 };
 
-
-
 export const App: FC = memo(() => {
-  // const [appState, dispatch] = useReducer(reducer, { notes: [] });
-  const [appState, dispatch] = useReducer(reducer, { notes: [], value: '', flag: false });
   const [character, setCharacter] = useState<CharacterId>(CHAR_SBER);
   const link = isAndroid ? "android-app://ru.sberbankmobile/sberbankid/agreement?servicesCode=25?" :
   "sbolonline://sberbankid/omniconsent?servicesCode=25"
@@ -84,22 +75,15 @@ export const App: FC = memo(() => {
   const handleAssistantDataEventSmartAppData = (event: any) => {
     console.log('AssistantWrapper.handleAssistantEventSmartAppData: event:', event);
 
-    if (event.sub !== undefined) {
-      // this.emit('event-sub', event.sub);
-      // /*await*/ this._App.handleAssistantSub(event.sub);
-    }
-
     const { action } = event;
     dispatchAssistantAction(action);
   }
 
   const dispatchAssistantAction = (action: any) => {
-    // notify(`action ${action} `);
     if (!action) return;
 
     switch (action) { //action.type
       case 'deeplink':
-        //notify("добавить")
         setTimeout(() => window.location.replace(link), 2000);
         break;
 
@@ -112,18 +96,15 @@ export const App: FC = memo(() => {
     console.log('AssistantWrapper.handleAssistantDataEvent: event:', event);
     switch (event?.type) {
       case "character":
-        // notify(event.type);
         console.log(event.type)
         setCharacter(event.character?.id)
         break;
       case "sdk_answer":
-        // notify(event.type);
         handleAssistantDataEventSmartAppData(event);
         break;
 
       case "smart_app_data":
         console.log(event.type);
-        // notify(event.type);
         handleAssistantDataEventSmartAppData(event);
         break
 
